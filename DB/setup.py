@@ -12,6 +12,8 @@ class db_setup:
 
     def __initialize(self):
         print("Initializing tables")
+
+        #add contact info
         self.__cursor.execute("""CREATE TABLE customers (
                                 customer_id INT UNSIGNED AUTO_INCREMENT,
                                 name VARCHAR(255),
@@ -29,15 +31,18 @@ class db_setup:
                                 PRIMARY KEY(product_id)
                                 )""")
 
+        #assign foreign key
         self.__cursor.execute("""CREATE TABLE rented_games (
                                 rental_id INT UNSIGNED AUTO_INCREMENT, 
                                 customer_id INT UNSIGNED, 
                                 product_id INT UNSIGNED,
                                 rental_date DATETIME,
+                                expected_return_date DATETIME,
                                 return_date DATETIME,
                                 overdue BOOL,
                                 PRIMARY KEY(rental_id)
                                 )""")
+
         self.__mydb.commit()
         self.__terminate()
 
@@ -57,7 +62,7 @@ class db_setup:
             print("Tables are already initialized!")
             self.__terminate()
         elif check[0] >= 1:
-            print("Tables partially initialized - Two tables exist\n")
+            print("Tables partially initialized\n")
             user_input = input("Do you wish to drop existing tables & reinitialize Y/N: ")
             if user_input == "Y" or user_input == "y" or user_input == "yes":
                 user_input = input("Are you certain Y/N: ")
